@@ -1,4 +1,3 @@
-import java.util.Scanner;
 public class Choose{
     private double[][] attackMap = new double[6][6];//攻撃用マップ
     private double[][] moveMap = new double[6][6];//移動用マップ

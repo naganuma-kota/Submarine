@@ -101,7 +101,6 @@ public class Method{
                 }
             }
         }
-        System.out.println("attack"+ aMax[0]+ " "+ aMax[1]);
         return aMax;
     }
     public int[] M32(int[][] myPlace, double[][] moveMap){
@@ -116,14 +115,14 @@ public class Method{
                 }
             }
         }
-        System.out.println("move" + mMax[0] +"," + mMax[1]);
         return mMax;
     }
     public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] aMax,int[]mMax){
         if(attackMap[aMax[0]][aMax[1]]>=moveMap[mMax[0]][mMax[1]]){
-            //System.out.println(aMax[0]+ " "+aMax[1] + "に攻撃！");
+            //System.out.println("移動元マス"+aMax[0]+ ", "+aMax[1]);
             M34(attackMap,aMax);
         }else{
+            System.out.println("移動元マス" + mMax[0] +", " + mMax[1]);
             M35(myPlace,moveMap,mMax);
         }
     }
@@ -154,11 +153,11 @@ public class Method{
                 min[a]=1;
             }
         }
-        System.out.println(min[0]+" "+min[1]);
+        System.out.println("移動先マス"+min[0]+", "+min[1]);
         myPlace[min[0]][min[1]]=myPlace[mMax[0]][mMax[1]];
         myPlace[mMax[0]][mMax[1]]=0;
     }
-    public void react(double[][]attackMap,int x,int y){
+    public void react(double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
