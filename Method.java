@@ -1,3 +1,4 @@
+import java.util.Scanner;
 public class Method{
     public void M11(double[][] attackMap, int x, int y){
         for(int i=-1;i<2;i++){  //11
@@ -120,14 +121,15 @@ public class Method{
     }
     public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] aMax,int[]mMax){
         if(attackMap[aMax[0]][aMax[1]]>=moveMap[mMax[0]][mMax[1]]){
-            System.out.println(aMax[0]+ " "+aMax[1] + "に攻撃！");
-            M34(aMax);
+            //System.out.println(aMax[0]+ " "+aMax[1] + "に攻撃！");
+            M34(attackMap,aMax);
         }else{
             M35(myPlace,moveMap,mMax);
         }
     }
-    public void M34(int[] aMax){
+    public void M34(double[][]attackMap,int[] aMax){
         System.out.println(aMax[0] + "," + aMax[1] + "マスに攻撃");
+        react(attackMap,aMax[0],aMax[1]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] mMax){//作り直し！
         //どうすれば、周囲のマスの探索と向きを同時に保存できるか
@@ -155,5 +157,24 @@ public class Method{
         System.out.println(min[0]+" "+min[1]);
         myPlace[min[0]][min[1]]=myPlace[mMax[0]][mMax[1]];
         myPlace[mMax[0]][mMax[1]]=0;
+    }
+    public void react(double[][]attackMap,int x,int y){
+        Scanner sc = new Scanner(System.in);
+        System.err.println("相手の反応を次のコマンドから入力してください");
+        System.err.println("a:波高し");
+        System.err.println("b:はずれ");
+        System.err.println("c:命中");
+        String reaction =sc.next();
+        switch(reaction){
+            case "a":
+                M12(attackMap, x, y);
+                break;
+            case "b":
+                M13(attackMap, x, y);
+                break;
+            case "c":
+                M14(attackMap, x, y);
+                break;
+        }
     }
 }

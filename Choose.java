@@ -19,23 +19,7 @@ public class Choose{
         m.M11(attackMap, x, y);
         m.M21(moveMap, x, y, result);
         m.M22(moveMap, x, y, result);
-        Scanner sc = new Scanner(System.in);
-        System.err.println("相手の反応を次のコマンドから入力してください");
-        System.err.println("a:波高し");
-        System.err.println("b:はずれ");
-        System.err.println("c:命中");
-        String reaction =sc.next();
-        switch(reaction){
-            case "a":
-                m.M12(attackMap, x, y);
-                break;
-            case "b":
-                m.M13(attackMap, x, y);
-                break;
-            case "c":
-                m.M14(attackMap, x, y);
-                break;
-        }
+        
     }
     public void move(int dx,int dy,int range){//相手が移動したときに実行
         Method m = new Method();
@@ -46,6 +30,7 @@ public class Choose{
         int[] aMax = m.M31(myPlace,attackMap);
         int[] mMax = m.M32(myPlace, moveMap);
         m.M33(myPlace,attackMap, moveMap, aMax, mMax);
+        
     }
     public void information(){
         System.out.println("myPlace");
