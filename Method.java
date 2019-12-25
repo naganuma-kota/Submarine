@@ -154,8 +154,13 @@ public class Method{
             }
         }
         System.out.println("移動先マス"+min[0]+", "+min[1]);
-        myPlace[min[0]][min[1]]=myPlace[mMax[0]][mMax[1]];
-        myPlace[mMax[0]][mMax[1]]=0;
+        if(myPlace[min[0]][min[1]]==0){
+            myPlace[min[0]][min[1]]=myPlace[mMax[0]][mMax[1]];
+            myPlace[mMax[0]][mMax[1]]=0;
+        }else{
+            System.out.println("移動先が重なりました。");
+        }
+        
     }
     public void react(double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
         Scanner sc = new Scanner(System.in);
