@@ -6,7 +6,7 @@ public class Choose{
     //ただし、0行0列は使用しない（現実の指示と配列番号を対応させるため）
 
 
-    public Choose(){//言わずも知れたコンストラクタ
+    public Choose(){
         System.out.println("Choose class is waked");
         setMyPlace(1, 3, 3);    //味方の初期位置
         setMyPlace(1, 4, 3);
@@ -31,7 +31,7 @@ public class Choose{
         m.M33(myPlace,attackMap, moveMap, aMax, mMax);
         
     }
-    public void information(){
+    public void information(){//現在の情報を表示
         System.out.println("myPlace");
         for(int i = 1;i<6;i++){
             for(int j = 1;j<6;j++){
