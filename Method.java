@@ -181,4 +181,7 @@ public class Method{
                 break;
         }
     }
+    public void shift(int[][]myPlace,int dx,int dy,int range){//自機を移動させるメソッド
+
+    }
 }
