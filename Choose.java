@@ -1,16 +1,16 @@
 public class Choose{
     private double[][] attackMap = new double[6][6];//攻撃用マップ
     private double[][] moveMap = new double[6][6];//移動用マップ
-    //private double[][] forecast = new double[6][6]; //合計後のマップ
     private int[][] myPlace = new int [6][6]; //味方の位置（-１は死亡,０は空白,それ以外はHP）
+    private int[][] ShipNumber = {{1,3},{1,4},{4,3}};//味方のxy座標を保存
     //ただし、0行0列は使用しない（現実の指示と配列番号を対応させるため）
 
 
     public Choose(){
-        System.out.println("Choose class is waked");
-        setMyPlace(1, 3, 3);    //味方の初期位置
-        setMyPlace(1, 4, 3);
-        setMyPlace(4, 3, 3);    
+        System.out.println("Choose class is waked"); 
+        for(int i=0;i<3;i++){//初期位置の記憶
+                myPlace[ShipNumber[i][1]][ShipNumber[i][0]] = 3;
+        }
     }
     public void attack(int x,int y){//攻撃を受けた時に実行
         Method m = new Method();
