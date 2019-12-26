@@ -103,19 +103,18 @@ public class Method{
         }
         return aMax;
     }
-    public int[] M32(int[][] myPlace, double[][] moveMap){
-        int[] mMax = new int[2];
-        for(int x=1;x<=5;x++){
-            for(int y=1;y<=5;y++){
-                if(myPlace[y][x] >=1){
-                    if(moveMap[y][x]>moveMap[mMax[0]][mMax[1]]){
-                        mMax[0] = y;
-                        mMax[1] = x;
-                    }
-                }
+    public int[] M32(int[][] shipNumber, double[][] moveMap){
+        int[] T = new int[2];
+        double max = 0;
+        for(int i=0;i<4;i++){
+            if(moveMap[shipNumber[i][0]][shipNumber[i][1]]>max){
+                max = moveMap[shipNumber[i][0]][shipNumber[i][1]];
+                T[0] = shipNumber[i][0];
+                T[1] = shipNumber[i][1];
             }
         }
-        return mMax;
+        System.out.println("t="+T[0]+T[1]+ ","+ max);
+        return T;
     }
     public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] aMax,int[]mMax){
         if(attackMap[aMax[0]][aMax[1]]>=moveMap[mMax[0]][mMax[1]]){
