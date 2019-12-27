@@ -131,15 +131,17 @@ public class Method{
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] mMax){//作り直し！
         //どうすれば、周囲のマスの探索と向きを同時に保存できるか
-        int[] min = {mMax[0]-1,mMax[1]-1};
+        int[] min = new int[2];
         
         for(int i=-1;i<2;i++){  
             for(int j=-1;j<2;j++){
                 try {
                     if(mMax[0]+i>=1&&mMax[0]+i<=5&&mMax[1]+j>=1&&mMax[1]+j<=5){
                         if(moveMap[mMax[0]+i][mMax[1]+j]<moveMap[min[0]][min[1]]){
-                            min[0]=mMax[0]+i;
-                            min[1]=mMax[1]+j;
+                            if(myPlace[mMax[0]+i][mMax[1]+j]==0){
+                                min[0]=mMax[0]+i;
+                                min[1]=mMax[1]+j;
+                            }
                         }
                     }    
                 } catch (Exception e) {
@@ -154,8 +156,7 @@ public class Method{
         }
         System.out.println("移動先マス"+min[0]+", "+min[1]);
         if(myPlace[min[0]][min[1]]==0){
-            myPlace[min[0]][min[1]]=myPlace[mMax[0]][mMax[1]];
-            myPlace[mMax[0]][mMax[1]]=0;
+            shift(myPlace, mMax[1],mMax[0], min[1], min[0]);
         }else{
             System.out.println("移動先が重なりました。");
         }
