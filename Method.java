@@ -180,7 +180,22 @@ public class Method{
                 break;
         }
     }
-    public void shift(int[][]myPlace,int dx,int dy,int range){//自機を移動させるメソッド
-
+    public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){
+        int mx = Nx - Fx;
+        int my = Ny - Fy;
+        if(mx>0&&my==0){
+            System.out.println("東に"+ mx +"マス移動");
+        }else if(mx<0&&my==0){
+            System.out.println("西に"+ -1*mx +"マス移動");
+        }else if(mx==0&&my>0){
+            System.out.println("南に"+ my +"マス移動");
+        }else if(mx==0&&my<0){
+            System.out.println("北に"+ -1*my +"マス移動");
+        }else{
+            System.err.println("shiftメソッドよりエラーです");
+            return;
+        }
+        myPlace[Ny][Nx] = myPlace[Fy][Fx];
+        myPlace[Fy][Fx] = 0;
     }
 }
