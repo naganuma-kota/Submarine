@@ -129,18 +129,35 @@ public class Method{
         System.out.println(aMax[0] + "," + aMax[1] + "マスに攻撃");
         react(attackMap,aMax[0],aMax[1]);
     }
-    public void M35(int[][] myPlace,double[][] moveMap,int[] mMax){//作り直し！
-        //どうすれば、周囲のマスの探索と向きを同時に保存できるか
+    public void M35(int[][] myPlace,double[][] moveMap,int[] T){//作り直し！
         int[] min = new int[2];
-        
-        for(int i=-1;i<2;i++){  
+        int x;int y;
+        y = 0;
+        for(x=-2;x<=2;x++){
+            try {
+                if(T[1]+x > 0){
+                    if(moveMap[T[0]+y][T[1]+x]<moveMap[min[0]][min[1]]){
+                        if(myPlace[T[0]+y][T[1]+x]==0){
+                            min[0]=T[0]+y;
+                            min[1]=T[1]+x;
+                        }
+                    }
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        x = 0;
+
+        /** 
+        for(int i=-1;i<2;i++){  //周囲16マスを探索している
             for(int j=-1;j<2;j++){
-                try {
-                    if(mMax[0]+i>=1&&mMax[0]+i<=5&&mMax[1]+j>=1&&mMax[1]+j<=5){
-                        if(moveMap[mMax[0]+i][mMax[1]+j]<moveMap[min[0]][min[1]]){
-                            if(myPlace[mMax[0]+i][mMax[1]+j]==0){
-                                min[0]=mMax[0]+i;
-                                min[1]=mMax[1]+j;
+                try {//指定したマスが存在しない場合があるからその場合はスキップする
+                    if(T[0]+i>=1&&T[0]+i<=5&&T[1]+j>=1&&T[1]+j<=5){
+                        if(moveMap[T[0]+i][T[1]+j]<moveMap[min[0]][min[1]]){
+                            if(myPlace[T[0]+i][T[1]+j]==0){
+                                min[0]=T[0]+i;
+                                min[1]=T[1]+j;
                             }
                         }
                     }    
@@ -156,10 +173,10 @@ public class Method{
         }
         System.out.println("移動先マス"+min[0]+", "+min[1]);
         if(myPlace[min[0]][min[1]]==0){
-            shift(myPlace, mMax[1],mMax[0], min[1], min[0]);
+            shift(myPlace, T[1],T[0], min[1], min[0]);
         }else{
             System.out.println("移動先が重なりました。");
-        }
+        }**/
         
     }
     public void react(double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
