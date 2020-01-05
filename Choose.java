@@ -56,6 +56,7 @@ public class Choose{
 
     }
     public String damege(int x,int y){//自分が相手の攻撃によってダメージを受けたか判定・処理する
+        //TODO:変数に日本語を用いているため、英語に置き換える
         if(myPlace[y][x]>1){
             System.out.println("命中");
             myPlace[y][x]--;

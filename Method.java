@@ -1,7 +1,7 @@
 import java.util.Scanner;
 public class Method{
     public void M11(double[][] attackMap, int x, int y){
-        for(int i=-1;i<2;i++){  //11
+        for(int i=-1;i<2;i++){  
             for(int j=-1;j<2;j++){
                 try {
                     if(y+i>=1&&y+i<=5&&x+j>=1&&x+j<=5){
@@ -12,7 +12,7 @@ public class Method{
                 }
             }
         }
-        attackMap[y][x]=0; //11
+        attackMap[y][x]=0;
     }
     public void M12(double[][] attackMap, int x,int y){
         M11(attackMap, x, y);
@@ -33,7 +33,10 @@ public class Method{
     public void M14(double[][]attackMap,int x,int y){
         attackMap[y][x]=attackMap[y][x]+5;
     }
-    public void M15(double[][]attackMap){
+    public void M14_2(int[][]myPlace,int x,int y){
+        myPlace[y][x] = -1;
+    }
+    public void M15(double[][]attackMap){//未実装
         for(int x=1;x<=5;x++){
             for(int y=1;y<=5;y++){
                 attackMap[y][x]=attackMap[y][x]+0.5;
@@ -41,7 +44,7 @@ public class Method{
         }
     }
     public void M21(double[][] moveMap, int x,int y, String result){
-        if(result.equals("波高し")||result.equals("はずれ")){ //21
+        if(result.equals("波高し")||result.equals("はずれ")){ 
             for(int i=-2;i<3;i++){  
                 for(int j=-2;j<3;j++){
                     try {
@@ -66,15 +69,15 @@ public class Method{
                     
                 }
             }
-        }                      //21
+        }                     
 
     }
     public void M22(double[][] moveMap, int x, int y, String result){
-        if(result.equals("命中")||result.equals("命中、撃沈")){//22
+        if(result.equals("命中")||result.equals("命中、撃沈")){
             moveMap[y][x] =moveMap[y][x]+5;
-        }//22
+        }
     }
-    public void M23(){
+    public void M23(){//未実装
 
     }
     public int[] M31(int[][] myPlace,double[][]attackMap){
@@ -113,34 +116,42 @@ public class Method{
                 T[1] = shipNumber[i][1];
             }
         }
-        System.out.println("t="+T[0]+T[1]+ ","+ max);
+        System.out.println("t="+T[0]+","+T[1]+ ","+ max);
         return T;
     }
     public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] aMax,int[]mMax){
         if(attackMap[aMax[0]][aMax[1]]>=moveMap[mMax[0]][mMax[1]]){
             //System.out.println("移動元マス"+aMax[0]+ ", "+aMax[1]);
-            M34(attackMap,aMax);
+            M34(myPlace,attackMap,aMax);
         }else{
             System.out.println("移動元マス" + mMax[0] +", " + mMax[1]);
             M35(myPlace,moveMap,mMax);
         }
     }
-    public void M34(double[][]attackMap,int[] aMax){
+    public void M34(int[][]myPlace,double[][]attackMap,int[] aMax){
         System.out.println(aMax[0] + "," + aMax[1] + "マスに攻撃");
-        react(attackMap,aMax[0],aMax[1]);
+        react(myPlace,attackMap,aMax[0],aMax[1]);
     }
-    public void M35(int[][] myPlace,double[][] moveMap,int[] T){//作り直し！
-        int[] min = new int[2];
+    public void M35(int[][] myPlace,double[][] moveMap,int[] T){
+        //TODO:現状半径2マスが移動範囲とされているため、十字型に作り直す
+        //FIXME:xとyの順番がぐちゃぐちゃなので治す
+        //TODO:mMaxとTなどど変数に統一性がないので改善する
+        int[] min = {100,100};
         int x;int y;
         y = 0;
         for(x=-2;x<=2;x++){
             try {
                 if(T[1]+x > 0){
-                    if(moveMap[T[0]+y][T[1]+x]<moveMap[min[0]][min[1]]){
-                        if(myPlace[T[0]+y][T[1]+x]==0){
-                            min[0]=T[0]+y;
-                            min[1]=T[1]+x;
-                        }
+                    if(min[1]!=100){
+                        if(moveMap[T[0]+y][T[1]+x]<moveMap[min[0]][min[1]]){
+                            if(myPlace[T[0]+y][T[1]+x]==0&&T[1]+x>0){
+                                min[0]=T[0]+y;
+                                min[1]=T[1]+x;
+                            }
+                        }    
+                    }else{
+                        min[0]=T[0]+y;
+                        min[1]=T[1]+x;
                     }
                 }
             } catch (Exception e) {
@@ -148,6 +159,28 @@ public class Method{
             }
         }
         x = 0;
+        for(y=-2;y<=2;y++){
+            try {
+                if(T[0]+y > 0){
+                    if(min[0]!=100){
+                        if(moveMap[T[0]+y][T[1]+x]<moveMap[min[0]][min[1]]){
+                            if(myPlace[T[0]+y][T[1]+x]==0&&T[0]+y > 0){
+                                min[0]=T[0]+y;
+                                min[1]=T[1]+x;
+                            }
+                        }
+                    }else{
+                        min[0]=T[0]+y;
+                        min[1]=T[1]+x;
+                    }
+                }
+            } catch (Exception e) {
+                continue;
+            }
+        }
+        System.out.println("移動先マス"+min[0]+","+min[1]);
+        shift(myPlace, T[0], T[1], min[0], min[1]);
+
 
         /** 
         for(int i=-1;i<2;i++){  //周囲16マスを探索している
@@ -179,12 +212,13 @@ public class Method{
         }**/
         
     }
-    public void react(double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
+    public void react(int[][]myPlace,double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
         System.err.println("b:はずれ");
         System.err.println("c:命中");
+        System.err.println("d:命中、撃沈");
         String reaction =sc.next();
         switch(reaction){
             case "a":
@@ -196,9 +230,12 @@ public class Method{
             case "c":
                 M14(attackMap, x, y);
                 break;
+            case "d":
+                M14_2(myPlace, x, y);
+                break;
         }
     }
-    public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){
+    public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){//完成版
         int mx = Nx - Fx;
         int my = Ny - Fy;
         if(mx>0&&my==0){
