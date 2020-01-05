@@ -36,12 +36,30 @@ public class Method{
     public void M14_2(int[][]myPlace,int x,int y){
         myPlace[y][x] = -1;
     }
-    public void M15(double[][]attackMap){//未実装
+    public void M15(double[][]attackMap,int dx,int dy){
+        //方針:すべてを*0.5したあと、別のマップを生成し、そこに移動後の値を入れていく。最後にミラーリングする。
         for(int x=1;x<=5;x++){
             for(int y=1;y<=5;y++){
-                attackMap[y][x]=attackMap[y][x]+0.5;
+                attackMap[y][x]=attackMap[y][x]*0.5;
             }
         }
+        double[][] tmpMap = new double[6][6];
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                try {
+                    tmpMap[y+dy][x+dx]=attackMap[y][x];
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                attackMap[y][x]=tmpMap[y][x];
+            }
+        }
+        
+
     }
     public void M21(double[][] moveMap, int x,int y, String result){
         if(result.equals("波高し")||result.equals("はずれ")){ 
@@ -77,8 +95,27 @@ public class Method{
             moveMap[y][x] =moveMap[y][x]+5;
         }
     }
-    public void M23(){//未実装
-
+    public void M23(double[][]moveMap,int dx,int dy){
+        for(int x=1;x<=5;x++){
+            for(int y=1;y<=5;y++){
+                moveMap[y][x]=moveMap[y][x]*0.5;
+            }
+        }
+        double[][] tmpMap = new double[6][6];
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                try {
+                    tmpMap[y+dy][x+dx]=moveMap[y][x];
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                moveMap[y][x]=tmpMap[y][x];
+            }
+        }
     }
     public int[] M31(int[][] myPlace,double[][]attackMap){
         int[] A = new int[2];
@@ -107,20 +144,6 @@ public class Method{
         return A;
     }
     public int[] M32(int[][] myPlace, double[][] moveMap){
-        //FIXME:shipNumberを使用しているため、作り直し
-        /* 
-        int[] T = new int[2];
-        double max = 0;
-        for(int i=0;i<4;i++){
-            if(moveMap[shipNumber[i][0]][shipNumber[i][1]]>max){
-                max = moveMap[shipNumber[i][0]][shipNumber[i][1]];
-                T[0] = shipNumber[i][0];
-                T[1] = shipNumber[i][1];
-            }
-        }
-        System.out.println("t="+T[0]+","+T[1]+ ","+ max);
-        return T;
-        */
         int[] T= new int[2];
         for(int y=1;y<=5;y++){
             for(int x=1;x<=5;x++){
@@ -192,7 +215,7 @@ public class Method{
         System.out.println("移動先マス"+min[0]+","+min[1]);
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
-    public void react(int[][]myPlace,double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
+    public void react(int[][]myPlace,double[][]attackMap,int x,int y){
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
@@ -216,7 +239,7 @@ public class Method{
                 break;
         }
     }
-    public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){//完成版
+    public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){
         int mx = Nx - Fx;
         int my = Ny - Fy;
         if(mx>0&&my==0){
