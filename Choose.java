@@ -27,7 +27,7 @@ public class Choose{
     public void myTurn(){//自分の行動を判断する
         Method m = new Method();
         int[] A = m.M31(myPlace,attackMap);
-        int[] T = m.M32(ShipNumber, moveMap);
+        int[] T = m.M32(myPlace, moveMap);
         m.M33(myPlace,attackMap, moveMap, A, T);
         
     }
