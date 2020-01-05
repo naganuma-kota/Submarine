@@ -1,3 +1,2 @@
-Interface.class
-Method.class
-Choose.class
+*.class
+.vscode/

@@ -26,30 +26,30 @@ public class Choose{
     }
     public void myTurn(){//自分の行動を判断する
         Method m = new Method();
-        int[] aMax = m.M31(myPlace,attackMap);
-        int[] mMax = m.M32(ShipNumber, moveMap);
-        m.M33(myPlace,attackMap, moveMap, aMax, mMax);
+        int[] A = m.M31(myPlace,attackMap);
+        int[] T = m.M32(ShipNumber, moveMap);
+        m.M33(myPlace,attackMap, moveMap, A, T);
         
     }
     public void information(){//現在の情報を表示
         System.out.println("myPlace");
-        for(int i = 1;i<6;i++){
-            for(int j = 1;j<6;j++){
-                System.out.print(myPlace[j][i] + " ");
+        for(int y = 1;y<6;y++){
+            for(int x = 1;x<6;x++){
+                System.out.print(myPlace[y][x] + " ");
             }
             System.out.println();
         }
         System.out.println("attackMap");
-        for(int i = 1;i<6;i++){
-            for(int j = 1;j<6;j++){
-                System.out.print(attackMap[j][i] + " ");
+        for(int y = 1;y<6;y++){
+            for(int x = 1;x<6;x++){
+                System.out.print(attackMap[y][x] + " ");
             }
             System.out.println();
         }
         System.out.println("moveMap");
-        for(int i = 1;i<6;i++){
-            for(int j = 1;j<6;j++){
-                System.out.print(moveMap[j][i] + " ");
+        for(int y = 1;y<6;y++){
+            for(int x = 1;x<6;x++){
+                System.out.print(moveMap[y][x] + " ");
             }
             System.out.println();
         }
@@ -67,10 +67,10 @@ public class Choose{
             return "命中、撃沈";
         }else{
             boolean flag =false;
-            outside: for(int k=-1;k<2;k++){
-                for(int l=-1;l<2;l++){
+            outside: for(int dy=-1;dy<2;dy++){
+                for(int dx=-1;dx<2;dx++){
                     try {
-                        if(myPlace[y+k][x+l]>0){
+                        if(myPlace[y+dy][x+dx]>0){
                             flag = true;
                             break outside;
                         }

@@ -1,11 +1,11 @@
 import java.util.Scanner;
 public class Method{
     public void M11(double[][] attackMap, int x, int y){
-        for(int i=-1;i<2;i++){  
-            for(int j=-1;j<2;j++){
+        for(int dy=-1;dy<2;dy++){  
+            for(int dx=-1;dx<2;dx++){
                 try {
-                    if(y+i>=1&&y+i<=5&&x+j>=1&&x+j<=5){
-                        attackMap[y+i][x+j]++;
+                    if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                        attackMap[y+dy][x+dx]++;
                     }    
                 } catch (Exception e) {
                     continue;
@@ -18,11 +18,11 @@ public class Method{
         M11(attackMap, x, y);
     }
     public void M13(double[][]attackMap,int x,int y){
-        for(int i=-1;i<2;i++){  
-            for(int j=-1;j<2;j++){
+        for(int dy=-1;dy<=1;dy++){  
+            for(int dx=-1;dx<=1;dx++){
                 try {
-                    if(y+i>=1&&y+i<=5&&x+j>=1&&x+j<=5){
-                        attackMap[y+i][x+j]=0;
+                    if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                        attackMap[y+dy][x+dx]=0;
                     }    
                 } catch (Exception e) {
                     continue;
@@ -45,11 +45,11 @@ public class Method{
     }
     public void M21(double[][] moveMap, int x,int y, String result){
         if(result.equals("波高し")||result.equals("はずれ")){ 
-            for(int i=-2;i<3;i++){  
-                for(int j=-2;j<3;j++){
+            for(int dy=-2;dy<=2;dy++){  
+                for(int dx=-2;dx<=2;dx++){
                     try {
-                        if(y+i>=1&&y+i<=5&&x+j>=1&&x+j<=5){
-                            moveMap[y+i][x+j]=moveMap[y+i][x+j]+0.5;
+                        if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                            moveMap[y+dy][x+dx]=moveMap[y+dy][x+dx]+0.5;
                         }
                     } catch (Exception e) {
                         continue;
@@ -57,11 +57,11 @@ public class Method{
                     
                 }
             }
-            for(int i=-1;i<2;i++){  
-                for(int j=-1;j<2;j++){
+            for(int dy=-1;dy<=1;dy++){  
+                for(int dx=-1;dx<=1;dx++){
                     try {
-                        if(y+i>=1&&y+i<=5&&x+j>=1&&x+j<=5){
-                            moveMap[y+i][x+j]=moveMap[y+i][x+j]+0.5;
+                        if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                            moveMap[y+dy][x+dx]=moveMap[y+dy][x+dx]+0.5;
                         }
                     } catch (Exception e) {
                         continue;
@@ -81,18 +81,18 @@ public class Method{
 
     }
     public int[] M31(int[][] myPlace,double[][]attackMap){
-        int[] aMax = new int[2];
-        for(int i=1;i<=5;i++){
-            for(int j=1;j<=5;j++){
-                if(myPlace[j][i]>=1){
-                    for(int k=-1;k<2;k++){  
-                        for(int l=-1;l<2;l++){
+        int[] A = new int[2];
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                if(myPlace[y][x]>=1){
+                    for(int dy=-1;dy<=1;dy++){  
+                        for(int dx=-1;dx<=1;dx++){
                             try {
-                                if(j+k>=1&&j+k<=5&&i+l>=1&&i+l<=5){
-                                    if(myPlace[j+k][i+l]==0){
-                                        if(attackMap[j+k][i+l]>attackMap[aMax[0]][aMax[1]]){
-                                            aMax[0]=j+k;
-                                            aMax[1]=i+l;
+                                if(x+dy>=1&&x+dy<=5&&y+dx>=1&&y+dx<=5){
+                                    if(myPlace[y+dy][x+dx]==0){
+                                        if(attackMap[y+dy][x+dx]>attackMap[A[0]][A[1]]){
+                                            A[0]=y+dy;
+                                            A[1]=x+dx;
                                         }
                                     }
                                 }    
@@ -104,9 +104,10 @@ public class Method{
                 }
             }
         }
-        return aMax;
+        return A;
     }
     public int[] M32(int[][] shipNumber, double[][] moveMap){
+        //FIXME:shipNumberを使用しているため、作り直し
         int[] T = new int[2];
         double max = 0;
         for(int i=0;i<4;i++){
@@ -119,23 +120,19 @@ public class Method{
         System.out.println("t="+T[0]+","+T[1]+ ","+ max);
         return T;
     }
-    public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] aMax,int[]mMax){
-        if(attackMap[aMax[0]][aMax[1]]>=moveMap[mMax[0]][mMax[1]]){
-            //System.out.println("移動元マス"+aMax[0]+ ", "+aMax[1]);
-            M34(myPlace,attackMap,aMax);
+    public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] A,int[]T){
+        if(attackMap[A[0]][A[1]]>=moveMap[T[0]][T[1]]){
+            M34(myPlace,attackMap,A);
         }else{
-            System.out.println("移動元マス" + mMax[0] +", " + mMax[1]);
-            M35(myPlace,moveMap,mMax);
+            System.out.println("移動元マス" + T[0] +", " + T[1]);
+            M35(myPlace,moveMap,T);
         }
     }
-    public void M34(int[][]myPlace,double[][]attackMap,int[] aMax){
-        System.out.println(aMax[0] + "," + aMax[1] + "マスに攻撃");
-        react(myPlace,attackMap,aMax[0],aMax[1]);
+    public void M34(int[][]myPlace,double[][]attackMap,int[] A){
+        System.out.println(A[0] + "," + A[1] + "マスに攻撃");
+        react(myPlace,attackMap,A[1],A[0]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] T){
-        //TODO:現状半径2マスが移動範囲とされているため、十字型に作り直す
-        //FIXME:xとyの順番がぐちゃぐちゃなので治す
-        //TODO:mMaxとTなどど変数に統一性がないので改善する
         int[] min = {100,100};
         int x;int y;
         y = 0;
@@ -179,38 +176,7 @@ public class Method{
             }
         }
         System.out.println("移動先マス"+min[0]+","+min[1]);
-        shift(myPlace, T[0], T[1], min[0], min[1]);
-
-
-        /** 
-        for(int i=-1;i<2;i++){  //周囲16マスを探索している
-            for(int j=-1;j<2;j++){
-                try {//指定したマスが存在しない場合があるからその場合はスキップする
-                    if(T[0]+i>=1&&T[0]+i<=5&&T[1]+j>=1&&T[1]+j<=5){
-                        if(moveMap[T[0]+i][T[1]+j]<moveMap[min[0]][min[1]]){
-                            if(myPlace[T[0]+i][T[1]+j]==0){
-                                min[0]=T[0]+i;
-                                min[1]=T[1]+j;
-                            }
-                        }
-                    }    
-                } catch (Exception e) {
-                    continue;
-                }
-            }
-        }
-        for(int a=0;a<=1;a++){
-            if(min[a]<=0){
-                min[a]=1;
-            }
-        }
-        System.out.println("移動先マス"+min[0]+", "+min[1]);
-        if(myPlace[min[0]][min[1]]==0){
-            shift(myPlace, T[1],T[0], min[1], min[0]);
-        }else{
-            System.out.println("移動先が重なりました。");
-        }**/
-        
+        shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
     public void react(int[][]myPlace,double[][]attackMap,int x,int y){//相手の反応を入力、指示するメソッド
         Scanner sc = new Scanner(System.in);
