@@ -107,20 +107,6 @@ public class Method{
         return A;
     }
     public int[] M32(int[][] myPlace, double[][] moveMap){
-        //FIXME:shipNumberを使用しているため、作り直し
-        /* 
-        int[] T = new int[2];
-        double max = 0;
-        for(int i=0;i<4;i++){
-            if(moveMap[shipNumber[i][0]][shipNumber[i][1]]>max){
-                max = moveMap[shipNumber[i][0]][shipNumber[i][1]];
-                T[0] = shipNumber[i][0];
-                T[1] = shipNumber[i][1];
-            }
-        }
-        System.out.println("t="+T[0]+","+T[1]+ ","+ max);
-        return T;
-        */
         int[] T= new int[2];
         for(int y=1;y<=5;y++){
             for(int x=1;x<=5;x++){
