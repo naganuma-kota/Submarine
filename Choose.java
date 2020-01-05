@@ -7,7 +7,6 @@ public class Choose{
 
 
     public Choose(){
-        System.out.println("Choose class is waked"); 
         for(int i=0;i<4;i++){//初期位置の記憶
                 myPlace[ShipNumber[i][0]][ShipNumber[i][1]] = 3;
         }
@@ -22,7 +21,10 @@ public class Choose{
     }
     public void move(int dx,int dy,int range){//相手が移動したときに実行
         Method m = new Method();
-        m.M15(attackMap);
+        dx = dx*range;
+        dy = dy*range;
+        m.M15(attackMap,dx,dy);
+        m.M23(moveMap,dx,dy);
     }
     public void myTurn(){//自分の行動を判断する
         Method m = new Method();
