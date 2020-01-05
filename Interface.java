@@ -37,6 +37,7 @@ public class Interface{
                     }
                     mv(c,direction,x);
                 }else if(command.equals("exit")){
+                    sc.close();
                     exit();
                 }else if(command.equals("next")){
                     c.myTurn();
