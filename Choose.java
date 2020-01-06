@@ -7,6 +7,7 @@ public class Choose{
 
 
     public Choose(){
+        //TODO:ShipNumberの廃止、初期位置の編集
         for(int i=0;i<4;i++){//初期位置の記憶
                 myPlace[ShipNumber[i][0]][ShipNumber[i][1]] = 3;
         }

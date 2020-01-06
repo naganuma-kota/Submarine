@@ -161,7 +161,7 @@ public class Method{
         if(attackMap[A[0]][A[1]]>=moveMap[T[0]][T[1]]){
             M34(myPlace,attackMap,A);
         }else{
-            System.out.println("移動元マス" + T[0] +", " + T[1]);
+            //System.out.println("移動元マス" + T[0] +", " + T[1]);
             M35(myPlace,moveMap,T);
         }
     }
@@ -212,7 +212,7 @@ public class Method{
                 continue;
             }
         }
-        System.out.println("移動先マス"+min[0]+","+min[1]);
+        //System.out.println("移動先マス"+min[0]+","+min[1]);
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
     public void react(int[][]myPlace,double[][]attackMap,int x,int y){
@@ -251,7 +251,7 @@ public class Method{
         }else if(mx==0&&my<0){
             System.out.println("北に"+ -1*my +"マス移動");
         }else{
-            System.err.println("shiftメソッドよりエラーです");
+            System.err.println("shiftメソッドに不正な値が渡されました。");
             return;
         }
         myPlace[Ny][Nx] = myPlace[Fy][Fx];
