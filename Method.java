@@ -216,27 +216,35 @@ public class Method{
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
     public void react(int[][]myPlace,double[][]attackMap,int x,int y){
+        //FIXME:mv使用後にこのメソッドを通過するとメインフォームが無限ループする
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
         System.err.println("b:はずれ");
         System.err.println("c:命中");
         System.err.println("d:命中、撃沈");
-        String reaction =sc.next();
-        sc.close();
-        switch(reaction){
-            case "a":
-                M12(attackMap, x, y);
-                break;
-            case "b":
-                M13(attackMap, x, y);
-                break;
-            case "c":
-                M14(attackMap, x, y);
-                break;
-            case "d":
-                M14_2(myPlace, x, y);
-                break;
+        while(true){
+            try {
+                String reaction =sc.next();
+                switch(reaction){
+                    case "a":
+                        M12(attackMap, x, y);
+                        return;
+                    case "b":
+                        M13(attackMap, x, y);
+                        return;
+                    case "c":
+                        M14(attackMap, x, y);
+                        return;
+                    case "d":
+                        M14_2(myPlace, x, y);
+                        return;
+                } 
+                System.out.println("コマンドが違います"); 
+            } catch (Exception e) {
+                System.out.println("メソッドエラーです");
+                continue;
+            }
         }
     }
     public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){
