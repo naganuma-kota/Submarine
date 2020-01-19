@@ -10,6 +10,7 @@ public class Choose{
     public Choose(){
         for(int i=0;i<4;i++){//初期位置の記憶
                 myPlace[ShipNumber[i][0]][ShipNumber[i][1]] = 3;
+
         }
     }
     public void attack(int x,int y){//攻撃を受けた時に実行

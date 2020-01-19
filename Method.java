@@ -4,7 +4,7 @@ public class Method{
     private double moveWeight[] = {0.7,0.4,0.3,0.2};
     private boolean[] whetherKill = new boolean[4];
     public Method(){
-        System.out.println("WAKEUP");
+        
     }
     public void M11(double[][][] attackMap, int x, int y){
         boolean flag=false;
@@ -179,7 +179,7 @@ public class Method{
                                 try {
                                     if(x+dy>=1&&x+dy<=5&&y+dx>=1&&y+dx<=5){
                                         if(myPlace[y+dy][x+dx]==0){
-                                            if(attackMap[y+dy][x+dx][z]>attackMap[A[0]][A[1]][A[2]]){
+                                            if(attackMap[y+dy][x+dx][z]>=attackMap[A[0]][A[1]][A[2]]){
                                                 A[0]=y+dy;
                                                 A[1]=x+dx;
                                                 A[2]=z;
