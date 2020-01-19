@@ -1,43 +1,77 @@
 import java.util.Scanner;
 public class Method{
-    private int counter = 0;
+    private int counter;
     private double moveWeight[] = {0.7,0.4,0.3,0.2};
     private boolean[] whetherKill = new boolean[4];
+    public Method(){
+        System.out.println("WAKEUP");
+    }
     public void M11(double[][][] attackMap, int x, int y){
+        boolean flag=false;
+        if(checkEmpty(attackMap)){
+            flag =true;
+        }
+        int temp = getCounter();
         for(int dy=-1;dy<2;dy++){  
             for(int dx=-1;dx<2;dx++){
-                int temp = getCounter();
+                //System.out.println(dx);
                 try {
                     if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                        //System.out.println(y+dy + ","+ x+dx);
                         //FIXME:0番には無条件に番号が割り振られるようになっている
-                        if(getCounter()==0||attackMap[y+dy][x+dx][getCounter()]!=0){
+                        if(flag||attackMap[y+dy][x+dx][getCounter()]!=0){
                             attackMap[y+dy][x+dx][getCounter()]++;
-                            break;
+                            continue;
                         }else{
                             setCounter();
                             attackMap[y+dy][x+dx][getCounter()]++;
-                            break;
+                            setCounter(temp);
+                            continue;
                         }
                     }       
-                    setCounter(temp);
                 } catch (Exception e) {
                     continue;
                 }
             }
         }
+        if(flag==false){
+            setCounter();
+
+        }
         for(int p=0;p<4;p++){
             attackMap[y][x][p]=0;
         }
     }
-    public void M12(double[][][] attackMap, int x,int y){
-        M11(attackMap, x, y);
+    public boolean checkEmpty(double[][][] attackMap){
+        for(int x=1;x<=5;x++){
+            for(int y=1;y<=5;y++){
+                if(attackMap[y][x][0]!=0){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-    public void M13(double[][][]attackMap,int x,int y){
+    public void M12(double[][][] attackMap, int x,int y,int z){
         for(int dy=-1;dy<=1;dy++){  
             for(int dx=-1;dx<=1;dx++){
                 try {
                     if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
-                        attackMap[y+dy][x+dx]=0;
+                        attackMap[y+dy][x+dx][z]++;
+                    }    
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+        attackMap[y][x][z] = 0;
+    }
+    public void M13(double[][][]attackMap,int x,int y,int z){
+        for(int dy=-1;dy<=1;dy++){  
+            for(int dx=-1;dx<=1;dx++){
+                try {
+                    if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                        attackMap[y+dy][x+dx][z]=0;
                     }    
                 } catch (Exception e) {
                     continue;
@@ -45,11 +79,13 @@ public class Method{
             }
         }
     }
-    public void M14(double[][][]attackMap,int x,int y){
-        attackMap[y][x]=attackMap[y][x]+5;
+    public void M14(double[][][]attackMap,int x,int y,int z){
+        attackMap[y][x][z]=attackMap[y][x][z]+5;
     }
-    public void M14_2(int[][]myPlace,int x,int y){
+    public void M14_2(int[][]myPlace,int x,int y,int z){
         myPlace[y][x] = -1;
+        whetherKill[z]=true;
+        
     }
     public void M15(double[][][]attackMap,int dx,int dy){
         //方針:すべてを*0.5したあと、別のマップを生成し、そこに移動後の値を入れていく。最後にミラーリングする。
@@ -143,7 +179,7 @@ public class Method{
                                 try {
                                     if(x+dy>=1&&x+dy<=5&&y+dx>=1&&y+dx<=5){
                                         if(myPlace[y+dy][x+dx]==0){
-                                            if(attackMap[y+dy][x+dx][z]>attackMap[A[0]][A[1]][tmZ]){
+                                            if(attackMap[y+dy][x+dx][z]>attackMap[A[0]][A[1]][A[2]]){
                                                 A[0]=y+dy;
                                                 A[1]=x+dx;
                                                 A[2]=z;
@@ -186,7 +222,7 @@ public class Method{
     }
     public void M34(int[][]myPlace,double[][][]attackMap,int[] A){
         System.out.println(A[0] + "," + A[1] + "マスに攻撃");
-        react(myPlace,attackMap,A[1],A[0]);
+        react(myPlace,attackMap,A[1],A[0],A[2]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] T){
         int[] min = {100,100};
@@ -234,7 +270,7 @@ public class Method{
         System.out.println("移動先マス"+min[0]+","+min[1]);
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
-    public void react(int[][]myPlace,double[][][]attackMap,int x,int y){
+    public void react(int[][]myPlace,double[][][]attackMap,int x,int y,int z){
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
@@ -242,19 +278,19 @@ public class Method{
         System.err.println("c:命中");
         System.err.println("d:命中、撃沈");
         String reaction =sc.next();
-        sc.close();
+        //sc.close();
         switch(reaction){
             case "a":
-                M12(attackMap, x, y);
+                M12(attackMap, x, y,z);
                 break;
             case "b":
-                M13(attackMap, x, y);
+                M13(attackMap, x, y,z);
                 break;
             case "c":
-                M14(attackMap, x, y);
+                M14(attackMap, x, y,z);
                 break;
             case "d":
-                M14_2(myPlace, x, y);
+                M14_2(myPlace, x, y,z);
                 break;
         }
     }
@@ -282,13 +318,14 @@ public class Method{
     public void setCounter(){
         //FIXME:すべて撃沈した際に無限ループする
         counter ++;
-        if(counter <= 4){
+        //System.out.println(counter);
+        if(counter >= 4){
             counter = 0;
         }
         if(whetherKill[counter]){
             counter++; 
         }
-        if(counter <= 4){
+        if(counter >= 4){
             counter = 0;
         }
     }

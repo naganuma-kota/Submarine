@@ -43,11 +43,14 @@ public class Choose{
             System.out.println();
         }
         System.out.println("attackMap");
-        for(int y = 1;y<6;y++){
-            for(int x = 1;x<6;x++){
-                System.out.print(attackMap[y][x] + " ");
-            }
-            System.out.println();
+        for(int z=0;z<4;z++){
+            System.out.println("["+ z + "]");
+            for(int y = 1;y<6;y++){
+                for(int x = 1;x<6;x++){
+                    System.out.print(attackMap[y][x][z] + " ");
+                }
+                System.out.println();
+            }    
         }
         System.out.println("moveMap");
         for(int y = 1;y<6;y++){

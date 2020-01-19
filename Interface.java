@@ -7,14 +7,15 @@ public class Interface{
         String direction;
         Choose c = new Choose();
         Scanner sc = new Scanner(System.in);
+        System.out.println("コマンドを入力してください");
+        System.out.println("ak 数値(y座標)　数値(x座標)　：相手からの攻撃の際にその位置とともに入力");
+        System.out.println("mv 文字列(方角)　数値(移動マス数)　：相手が移動した際に方角をn,s,e,wで、移動マスを1,2の数字で入力");
+        System.out.println("next　：akもしくはmvコマンドを使用した後、自分を行動を表示させるために使用する");
+        System.out.println("info　：自機の位置、攻撃用マップ、移動用マップを表示する");
+        System.out.println("exit　：プログラムを終了する");
+
         while(true){
             command=""; direction=""; x=0; y=0;//初期化
-            System.out.println("コマンドを入力してください");
-            System.out.println("ak 数値(y座標)　数値(x座標)　：相手からの攻撃の際にその位置とともに入力");
-            System.out.println("mv 文字列(方角)　数値(移動マス数)　：相手が移動した際に方角をn,s,e,wで、移動マスを1,2の数字で入力");
-            System.out.println("next　：akもしくはmvコマンドを使用した後、自分を行動を表示させるために使用する");
-            System.out.println("info　：自機の位置、攻撃用マップ、移動用マップを表示する");
-            System.out.println("exit　：プログラムを終了する");
             System.err.print("Please,imput command: ");
             try {
                 command =sc.next();
