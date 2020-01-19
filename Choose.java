@@ -1,8 +1,9 @@
 public class Choose{
-    private double[][] attackMap = new double[6][6];//攻撃用マップ
+    private double[][][] attackMap = new double[6][6][4];//攻撃用マップ
     private double[][] moveMap = new double[6][6];//移動用マップ
     private int[][] myPlace = new int [6][6]; //味方の位置（-１は死亡,０は空白,それ以外はHP）
     private int[][] ShipNumber = {{3,1},{4,1},{3,4},{5,5}};//味方のyx座標を保存
+    private Method m = new Method();
     //ただし、0行0列は使用しない（現実の指示と配列番号を対応させるため）
 
 
@@ -12,7 +13,7 @@ public class Choose{
         }
     }
     public void attack(int x,int y){//攻撃を受けた時に実行
-        Method m = new Method();
+        //Method m = new Method();
         String result = damege(x, y);
         m.M11(attackMap, x, y);
         m.M21(moveMap, x, y, result);
@@ -20,14 +21,14 @@ public class Choose{
         
     }
     public void move(int dx,int dy,int range){//相手が移動したときに実行
-        Method m = new Method();
+        //Method m = new Method();
         dx = dx*range;
         dy = dy*range;
         m.M15(attackMap,dx,dy);
         m.M23(moveMap,dx,dy);
     }
     public void myTurn(){//自分の行動を判断する
-        Method m = new Method();
+        //Method m = new Method();
         int[] A = m.M31(myPlace,attackMap);
         int[] T = m.M32(myPlace, moveMap);
         m.M33(myPlace,attackMap, moveMap, A, T);
