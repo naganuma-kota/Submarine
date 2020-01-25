@@ -1,6 +1,7 @@
 import java.util.Scanner;
 public class Interface{
     public static void main(String args[]){
+        //FIXME:操作ミスをした時の処理が出来ていない！！
         String command; //コマンド
         int x;
         int y;

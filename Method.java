@@ -170,6 +170,7 @@ public class Method{
         react(myPlace,attackMap,A[1],A[0]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] T){
+        //FIXME:minが(100,100)で受け渡されたときの処理が出来ていない！！！
         int[] min = {100,100};
         int x;int y;
         y = 0;
