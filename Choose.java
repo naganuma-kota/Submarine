@@ -2,6 +2,10 @@ public class Choose{
     private double[][] attackMap = new double[6][6];//攻撃用マップ
     private double[][] moveMap = new double[6][6];//移動用マップ
     private int[][] myPlace = new int [6][6]; //味方の位置（-１は死亡,０は空白,それ以外はHP）
+    private double[][] RattackMap = new double[6][6];//攻撃用マップ
+    private double[][] RmoveMap = new double[6][6];//移動用マップ
+    private int[][] RmyPlace = new int [6][6]; //味方の位置（-１は死亡,０は空白,それ以外はHP）
+
     //ただし、0行0列は使用しない（現実の指示と配列番号を対応させるため）
 
 
@@ -105,5 +109,32 @@ public class Choose{
     }
     public void setMyPlace(int x,int y,int n){
         myPlace[y][x] = n;
+    }
+    public void remenber(){
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                RattackMap[y][x]=attackMap[y][x];
+                RmoveMap[y][x]=moveMap[y][x];
+                RmyPlace[y][x]=myPlace[y][x];
+            }
+        }
+    }
+    public void redo(){
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                attackMap[y][x]=RattackMap[y][x];
+                moveMap[y][x]=RmoveMap[y][x];
+                myPlace[y][x]=RmyPlace[y][x];
+            }
+        }
+    }
+    public void initialize(){
+        for(int y=1;y<=5;y++){
+            for(int x=1;x<=5;x++){
+                attackMap[y][x]=1;
+                moveMap[y][x]=0;
+                myPlace[y][x]=0;
+            }
+        }
     }
 }

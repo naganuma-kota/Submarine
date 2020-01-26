@@ -14,10 +14,14 @@ public class Interface{
         System.out.println("next　：akもしくはmvコマンドを使用した後、自分を行動を表示させるために使用する");
         System.out.println("info　：自機の位置、攻撃用マップ、移動用マップを表示する");
         System.out.println("exit　：プログラムを終了する");
+        System.out.println("emagency:最終手段");
+        System.out.println("redo  :一手前に戻る（infoなどを利用すると使えなくなる）");
+        
         System.out.println("-------------------------------------------------------------------");
         while(true){
             command=""; direction=""; x=0; y=0;//初期化
-            System.err.print("Please,imput command: ");
+            c.remenber();
+            System.err.print("Please,input command: ");
             try {
                 command =sc.next();
                 if(command.equals("ak")){
@@ -45,6 +49,23 @@ public class Interface{
                     c.myTurn();
                 }else if(command.equals("info")){
                     c.information();
+                }else if(command.equals("redo")){
+                    c.redo();
+                }else if(command.equals("emagency")){
+                    c.initialize();
+                    int hp;
+                    while(true){
+                        try {
+                            y = sc.nextInt();
+                            x = sc.nextInt();
+                            hp = sc.nextInt();
+
+                        } catch (Exception e) {
+                            System.out.println("終了");
+                            break;
+                        }
+                        c.setMyPlace(x, y, hp);
+                    }
                 }else{
                     System.out.println("コマンドが違います");
                     continue;
