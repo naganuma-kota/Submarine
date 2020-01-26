@@ -1,28 +1,77 @@
 import java.util.Scanner;
 public class Method{
-    public void M11(double[][] attackMap, int x, int y){
+    private int counter;
+    private double moveWeight[] = {0.7,0.4,0.3,0.2};
+    private boolean[] whetherKill = new boolean[4];
+    public Method(){
+        
+    }
+    public void M11(double[][][] attackMap, int x, int y){
+        boolean flag=false;
+        if(checkEmpty(attackMap)){
+            flag =true;
+        }
+        int temp = getCounter();
         for(int dy=-1;dy<2;dy++){  
             for(int dx=-1;dx<2;dx++){
+                //System.out.println(dx);
                 try {
                     if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
-                        attackMap[y+dy][x+dx]++;
-                    }    
+                        //System.out.println(y+dy + ","+ x+dx);
+                        //FIXME:0番には無条件に番号が割り振られるようになっている
+                        if(flag||attackMap[y+dy][x+dx][getCounter()]!=0){
+                            attackMap[y+dy][x+dx][getCounter()]++;
+                            continue;
+                        }else{
+                            setCounter();
+                            attackMap[y+dy][x+dx][getCounter()]++;
+                            setCounter(temp);
+                            continue;
+                        }
+                    }       
                 } catch (Exception e) {
                     continue;
                 }
             }
         }
-        attackMap[y][x]=0;
+        if(flag==false){
+            setCounter();
+
+        }
+        for(int p=0;p<4;p++){
+            attackMap[y][x][p]=0;
+        }
     }
-    public void M12(double[][] attackMap, int x,int y){
-        M11(attackMap, x, y);
+    public boolean checkEmpty(double[][][] attackMap){
+        for(int x=1;x<=5;x++){
+            for(int y=1;y<=5;y++){
+                if(attackMap[y][x][0]!=0){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
-    public void M13(double[][]attackMap,int x,int y){
+    public void M12(double[][][] attackMap, int x,int y,int z){
         for(int dy=-1;dy<=1;dy++){  
             for(int dx=-1;dx<=1;dx++){
                 try {
                     if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
-                        attackMap[y+dy][x+dx]=0;
+                        attackMap[y+dy][x+dx][z]++;
+                    }    
+                } catch (Exception e) {
+                    continue;
+                }
+            }
+        }
+        attackMap[y][x][z] = 0;
+    }
+    public void M13(double[][][]attackMap,int x,int y,int z){
+        for(int dy=-1;dy<=1;dy++){  
+            for(int dx=-1;dx<=1;dx++){
+                try {
+                    if(y+dy>=1&&y+dy<=5&&x+dx>=1&&x+dx<=5){
+                        attackMap[y+dy][x+dx][z]=0;
                     }    
                 } catch (Exception e) {
                     continue;
@@ -30,36 +79,38 @@ public class Method{
             }
         }
     }
-    public void M14(double[][]attackMap,int x,int y){
-        attackMap[y][x]=attackMap[y][x]+5;
+    public void M14(double[][][]attackMap,int x,int y,int z){
+        attackMap[y][x][z]=attackMap[y][x][z]+5;
     }
-    public void M14_2(int[][]myPlace,int x,int y){
+    public void M14_2(int[][]myPlace,int x,int y,int z){
         myPlace[y][x] = -1;
+        whetherKill[z]=true;
+        
     }
-    public void M15(double[][]attackMap,int dx,int dy){
+    public void M15(double[][][]attackMap,int dx,int dy){
         //方針:すべてを*0.5したあと、別のマップを生成し、そこに移動後の値を入れていく。最後にミラーリングする。
-        for(int x=1;x<=5;x++){
-            for(int y=1;y<=5;y++){
-                attackMap[y][x]=attackMap[y][x]*0.5;
-            }
-        }
-        double[][] tmpMap = new double[6][6];
-        for(int y=1;y<=5;y++){
+        for(int z=0;z<4;z++){
             for(int x=1;x<=5;x++){
-                try {
-                    tmpMap[y+dy][x+dx]=attackMap[y][x];
-                } catch (Exception e) {
-                    continue;
+                for(int y=1;y<=5;y++){
+                    attackMap[y][x][z]=attackMap[y][x][z]*moveWeight[z];
+                }
+            }
+            double[][] tmpMap = new double[6][6];
+            for(int y=1;y<=5;y++){
+                for(int x=1;x<=5;x++){
+                    try {
+                        tmpMap[y+dy][x+dx]=attackMap[y][x][z];
+                    } catch (Exception e) {
+                        continue;
+                    }
+                }
+            }
+            for(int y=1;y<=5;y++){
+                for(int x=1;x<=5;x++){
+                    attackMap[y][x][z]=attackMap[y][x][z]+tmpMap[y][x];
                 }
             }
         }
-        for(int y=1;y<=5;y++){
-            for(int x=1;x<=5;x++){
-                attackMap[y][x]=tmpMap[y][x];
-            }
-        }
-        
-
     }
     public void M21(double[][] moveMap, int x,int y, String result){
         if(result.equals("波高し")||result.equals("はずれ")){ 
@@ -117,29 +168,33 @@ public class Method{
             }
         }
     }
-    public int[] M31(int[][] myPlace,double[][]attackMap){
-        int[] A = new int[2];
-        for(int y=1;y<=5;y++){
-            for(int x=1;x<=5;x++){
-                if(myPlace[y][x]>=1){
-                    for(int dy=-1;dy<=1;dy++){  
-                        for(int dx=-1;dx<=1;dx++){
-                            try {
-                                if(x+dy>=1&&x+dy<=5&&y+dx>=1&&y+dx<=5){
-                                    if(myPlace[y+dy][x+dx]==0){
-                                        if(attackMap[y+dy][x+dx]>attackMap[A[0]][A[1]]){
-                                            A[0]=y+dy;
-                                            A[1]=x+dx;
+    public int[] M31(int[][] myPlace,double[][][]attackMap){
+        int[] A = new int[3];
+        for(int z=0;z<4;z++){
+            for(int y=1;y<=5;y++){
+                for(int x=1;x<=5;x++){
+                    if(myPlace[y][x]>=1){
+                        for(int dy=-1;dy<=1;dy++){  
+                            for(int dx=-1;dx<=1;dx++){
+                                try {
+                                    if(x+dy>=1&&x+dy<=5&&y+dx>=1&&y+dx<=5){
+                                        if(myPlace[y+dy][x+dx]==0){
+                                            if(attackMap[y+dy][x+dx][z]>=attackMap[A[0]][A[1]][A[2]]){
+                                                A[0]=y+dy;
+                                                A[1]=x+dx;
+                                                A[2]=z;
+                                            }
                                         }
-                                    }
-                                }    
-                            } catch (Exception e) {
-                                continue;
+                                    }    
+                                } catch (Exception e) {
+                                    continue;
+                                }
                             }
                         }
                     }
                 }
             }
+    
         }
         return A;
     }
@@ -157,17 +212,17 @@ public class Method{
         }
         return T;
     }
-    public void M33(int[][] myPlace,double[][] attackMap,double[][] moveMap,int[] A,int[]T){
-        if(attackMap[A[0]][A[1]]>=moveMap[T[0]][T[1]]){
+    public void M33(int[][] myPlace,double[][][] attackMap,double[][] moveMap,int[] A,int[]T){
+        if(attackMap[A[0]][A[1]][A[2]]>=moveMap[T[0]][T[1]]){
             M34(myPlace,attackMap,A);
         }else{
             //System.out.println("移動元マス" + T[0] +", " + T[1]);
             M35(myPlace,moveMap,T);
         }
     }
-    public void M34(int[][]myPlace,double[][]attackMap,int[] A){
+    public void M34(int[][]myPlace,double[][][]attackMap,int[] A){
         System.out.println(A[0] + "," + A[1] + "マスに攻撃");
-        react(myPlace,attackMap,A[1],A[0]);
+        react(myPlace,attackMap,A[1],A[0],A[2]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] T){
         //FIXME:minが(100,100)で受け渡されたときの処理が出来ていない！！！
@@ -216,6 +271,7 @@ public class Method{
         //System.out.println("移動先マス"+min[0]+","+min[1]);
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
+
     public void react(int[][]myPlace,double[][]attackMap,int x,int y){
         //FIXME:mv使用後にこのメソッドを通過するとメインフォームが無限ループする
         Scanner sc = new Scanner(System.in);
@@ -265,5 +321,25 @@ public class Method{
         }
         myPlace[Ny][Nx] = myPlace[Fy][Fx];
         myPlace[Fy][Fx] = 0;
+    }
+    public int getCounter(){
+        return counter;
+    }
+    public void setCounter(){
+        //FIXME:すべて撃沈した際に無限ループする
+        counter ++;
+        //System.out.println(counter);
+        if(counter >= 4){
+            counter = 0;
+        }
+        if(whetherKill[counter]){
+            counter++; 
+        }
+        if(counter >= 4){
+            counter = 0;
+        }
+    }
+    public void setCounter(int num){
+        counter = num;
     }
 }
