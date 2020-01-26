@@ -244,7 +244,7 @@ public class Method{
                 System.out.println("コマンドが違います"); 
             } catch (Exception e) {
                 System.out.println("メソッドエラーです");
-                System.out.println("infoおよびemagencyを使用して初期化してください")
+                System.out.println("infoおよびemagencyを使用して初期化してください");
                 continue;
             }
         }
@@ -262,7 +262,7 @@ public class Method{
             System.out.println("北に"+ -1*my +"マス移動");
         }else{
             System.err.println("shiftメソッドに不正な値が渡されました。");
-            System.out.println("infoおよびemagencyを使用して、初期化してください")
+            System.out.println("infoおよびemagencyを使用して、初期化してください");
             return;
         }
         myPlace[Ny][Nx] = myPlace[Fy][Fx];
