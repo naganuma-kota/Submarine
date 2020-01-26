@@ -2,8 +2,10 @@ public class Choose{
     private double[][][] attackMap = new double[6][6][4];//攻撃用マップ
     private double[][] moveMap = new double[6][6];//移動用マップ
     private int[][] myPlace = new int [6][6]; //味方の位置（-１は死亡,０は空白,それ以外はHP）
+
     private int[][] ShipNumber = {{3,1},{4,1},{3,4},{5,5}};//味方のyx座標を保存
     private Method m = new Method();
+
     //ただし、0行0列は使用しない（現実の指示と配列番号を対応させるため）
 
 
@@ -12,6 +14,18 @@ public class Choose{
                 myPlace[ShipNumber[i][0]][ShipNumber[i][1]] = 3;
 
         }
+        attackMap[1][2]=0.1;
+        attackMap[1][4]=0.1;
+        attackMap[2][1]=0.1;
+        attackMap[2][2]=0.1;
+        attackMap[2][4]=0.1;
+        attackMap[2][5]=0.1;
+        attackMap[4][1]=0.1;
+        attackMap[4][2]=0.1;
+        attackMap[4][4]=0.1;
+        attackMap[4][5]=0.1;
+        attackMap[5][2]=0.1;
+        attackMap[5][4]=0.1;
     }
     public void attack(int x,int y){//攻撃を受けた時に実行
         //Method m = new Method();

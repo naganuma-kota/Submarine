@@ -216,7 +216,7 @@ public class Method{
         if(attackMap[A[0]][A[1]][A[2]]>=moveMap[T[0]][T[1]]){
             M34(myPlace,attackMap,A);
         }else{
-            System.out.println("移動元マス" + T[0] +", " + T[1]);
+            //System.out.println("移動元マス" + T[0] +", " + T[1]);
             M35(myPlace,moveMap,T);
         }
     }
@@ -225,6 +225,7 @@ public class Method{
         react(myPlace,attackMap,A[1],A[0],A[2]);
     }
     public void M35(int[][] myPlace,double[][] moveMap,int[] T){
+        //FIXME:minが(100,100)で受け渡されたときの処理が出来ていない！！！
         int[] min = {100,100};
         int x;int y;
         y = 0;
@@ -267,31 +268,40 @@ public class Method{
                 continue;
             }
         }
-        System.out.println("移動先マス"+min[0]+","+min[1]);
+        //System.out.println("移動先マス"+min[0]+","+min[1]);
         shift(myPlace, T[1], T[0], min[1], min[0]);        
     }
-    public void react(int[][]myPlace,double[][][]attackMap,int x,int y,int z){
+
+    public void react(int[][]myPlace,double[][]attackMap,int x,int y){
+        //FIXME:mv使用後にこのメソッドを通過するとメインフォームが無限ループする
         Scanner sc = new Scanner(System.in);
         System.err.println("相手の反応を次のコマンドから入力してください");
         System.err.println("a:波高し");
         System.err.println("b:はずれ");
         System.err.println("c:命中");
         System.err.println("d:命中、撃沈");
-        String reaction =sc.next();
-        //sc.close();
-        switch(reaction){
-            case "a":
-                M12(attackMap, x, y,z);
-                break;
-            case "b":
-                M13(attackMap, x, y,z);
-                break;
-            case "c":
-                M14(attackMap, x, y,z);
-                break;
-            case "d":
-                M14_2(myPlace, x, y,z);
-                break;
+        while(true){
+            try {
+                String reaction =sc.next();
+                switch(reaction){
+                    case "a":
+                        M12(attackMap, x, y);
+                        return;
+                    case "b":
+                        M13(attackMap, x, y);
+                        return;
+                    case "c":
+                        M14(attackMap, x, y);
+                        return;
+                    case "d":
+                        M14_2(myPlace, x, y);
+                        return;
+                } 
+                System.out.println("コマンドが違います"); 
+            } catch (Exception e) {
+                System.out.println("メソッドエラーです");
+                continue;
+            }
         }
     }
     public void shift(int[][]myPlace,int Fx,int Fy,int Nx,int Ny){
@@ -306,7 +316,7 @@ public class Method{
         }else if(mx==0&&my<0){
             System.out.println("北に"+ -1*my +"マス移動");
         }else{
-            System.err.println("shiftメソッドよりエラーです");
+            System.err.println("shiftメソッドに不正な値が渡されました。");
             return;
         }
         myPlace[Ny][Nx] = myPlace[Fy][Fx];
